@@ -52,11 +52,12 @@ class Pokemon:
         return f"Имя твоего покеомона: {self.name}"
 
 
+
     # Метод класса для получения картинки покемона
     def show_gen_i_red_blue(self):
         return self.gen_i_red_blue
     
-    
+
     def show_img(self):
         return self.img
 
