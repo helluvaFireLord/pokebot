@@ -5,10 +5,11 @@ from logic import Pokemon, Wizard, Fighter
 
 bot = telebot.TeleBot(token) 
 
-
-
-
-
+@bot.message_handler(commands=['info'])
+def info(message):
+    if message.from_user.username in Pokemon.pokemons.keys():
+        pok = Pokemon.pokemons[message.from_user.username]
+        bot.send_message(message.chat.id, pok.info())
 
 @bot.message_handler(commands=['go'])
 def go(message):
@@ -22,7 +23,6 @@ def go(message):
             pokemon = Fighter(message.from_user.username)
         bot.send_message(message.chat.id, pokemon.info())
         bot.send_photo(message.chat.id, pokemon.show_img())
-        bot.send_photo(message.chat.id, pokemon.show_gen_i_red_blue())
     else:
         bot.reply_to(message, "Ты уже создал себе покемона")
 
