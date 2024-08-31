@@ -13,6 +13,8 @@ class Pokemon:
         self.img = self.get_img()
         self.name = self.get_name()
 
+        self.power = randint(30, 60)
+        self.hp = randint(200, 400)
         Pokemon.pokemons[pokemon_trainer] = self
 
     # Метод для получения картинки покемона через API
@@ -36,7 +38,7 @@ class Pokemon:
             return "Pikachu"
 
     #Метод для возвращения поколения i красный-синий
-#"versions"['versions']['generation-i']['red-blue']['front_default']
+    #"versions"['versions']['generation-i']['red-blue']['front_default']
     def get_gen_i_red_blue(self):
         url = f'https://pokeapi.co/api/v2/pokemon/{self.pokemon_number}'
         response = requests.get(url)
@@ -49,7 +51,22 @@ class Pokemon:
 
     # Метод класса для получения информации
     def info(self):
-        return f"Имя твоего покеомона: {self.name}"
+        return f'''Имя твоего покеомона: {self.name}
+Cила покемона {self.power}
+Здоровье покемона {self.hp}
+'''
+
+    def atk(self, enemy):
+        if isinstance(enemy, Wizard):
+            chance = randint(1, 5)
+            if chance == 1:
+                return 'Покемон-волшебник применил щит в сражении'
+        if enemy.hp > self.power:
+            enemy.hp -= self.power
+            return f'Сражение @{self.name} c @{enemy.name}'
+        else:
+            enemy.hp = 0
+            return f'Победа @{self.name} над @{enemy.name}'
 
 
 
@@ -61,5 +78,26 @@ class Pokemon:
     def show_img(self):
         return self.img
 
+class Wizard(Pokemon):
+    pass
+
+class Fighter(Pokemon):
+    def atk(self, enemy):
+        super_power = randint(5, 15)
+        self.power += super_power
+        result = super().atk(enemy)
+        self.power -= super_power
+        return  result + f'\nБоец применил супер-атаку силой: {super_power}' 
 
 
+
+
+if __name__ == '__main__':
+    wizard = Wizard("username1")
+    fighter = Fighter("username2")
+
+    print(wizard.info())
+    print()
+    print(fighter.info())
+    print()
+    print(fighter.atk(wizard))
