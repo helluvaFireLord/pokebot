@@ -27,6 +27,14 @@ def go(message):
         bot.reply_to(message, "Ты уже создал себе покемона")
 
 
+@bot.message_handler(commands=['feed'])
+def feed_pok(message):
+    if message.from_user.username in Pokemon.pokemons.keys():
+        pok = Pokemon.pokemons[message.from_user.username]
+        bot.send_message(message.chat.id, pok.feed())
+    else:
+        bot.reply_to(message, "У тебя нет покемона")
+  
 
 
 @bot.message_handler(commands=['atk'])
